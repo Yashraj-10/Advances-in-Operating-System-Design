@@ -197,31 +197,31 @@ static struct process_node *process_insert(pid_t pid)
 // Delete a process node with the given pid
 static int process_delete(pid_t pid)
 {
-    struct process_node *current = process_list;
+    struct process_node *curr = process_list;
     struct process_node *previous = NULL;
 
-    while (current != NULL)
+    while (curr != NULL)
     {
-        if (current->pid == pid)
+        if (curr->pid == pid)
         {
             if (previous == NULL)
-                process_list = current->next;
+                process_list = curr->next;
             else
-                previous->next = current->next;
+                previous->next = curr->next;
 
-            if (current != NULL)
+            if (curr != NULL)
             {
-                if (current->process_deque != NULL)
-                    deque_delete(current->process_deque);
+                if (curr->process_deque != NULL)
+                    deque_delete(curr->process_deque);
 
-                kfree(current);
+                kfree(curr);
             }
 
             return 0;
         }
 
-        previous = current;
-        current = current->next;
+        previous = curr;
+        curr = curr->next;
     }
 
     return -EACCES;
@@ -230,19 +230,19 @@ static int process_delete(pid_t pid)
 // Delete the process list
 static void process_list_delete(void)
 {
-    struct process_node *current = process_list;
+    struct process_node *curr = process_list;
     struct process_node *next = NULL;
 
-    while (current != NULL)
+    while (curr != NULL)
     {
-        next = current->next;
+        next = curr->next;
 
-        if (current->process_deque != NULL)
-            deque_delete(current->process_deque);
+        if (curr->process_deque != NULL)
+            deque_delete(curr->process_deque);
 
-        kfree(current);
+        kfree(curr);
 
-        current = next;
+        curr = next;
     }
 
     process_list = NULL;
