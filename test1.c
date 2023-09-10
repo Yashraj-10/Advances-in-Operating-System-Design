@@ -26,7 +26,7 @@ void test(int values[], int length)
 
 int main() {
     int length1 = 5;
-    int valuesues1[] = {0, 1, -2, 3, 4};
+    int valuesues1[] = {10, 1, -2, 3, 4};
 
     test(valuesues1, length1);
 
