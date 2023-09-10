@@ -88,7 +88,7 @@ static int deque_insert(struct deque *d, int val)
         else if ((d->front == -1) && (d->rear == -1))
         {
             d->front = d->rear = 0;
-            d->arr[f] = val;
+            d->arr[d->front] = val;
         }
         else if (d->front == 0)
         {
@@ -187,7 +187,7 @@ static struct process_node *process_insert(pid_t pid)
 
     node->pid = pid;
     node->state = PROC_FILE_OPEN;
-    node->proc_pq = NULL;
+    node->process_deque = NULL;
     node->next = process_list;
     process_list = node;
 
