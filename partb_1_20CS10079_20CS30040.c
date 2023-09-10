@@ -25,7 +25,6 @@ struct deque
     int *arr;
     int front;
     int rear;
-    int size;
     int capacity;
 };
 
@@ -69,7 +68,6 @@ static struct deque *deque_init(int capacity)
 
     d->front = -1;
     d->rear = -1;
-    d->size = 0;
     d->capacity = capacity;
 
     return d;
