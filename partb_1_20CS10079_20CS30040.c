@@ -78,7 +78,7 @@ static struct deque *deque_init(int capacity)
 // Insert an element in the deque
 static int deque_insert(struct deque *d, int val)
 {
-    if (val % 2 == 1)
+    if (val % 2 == 0)
     {
         if ((d->front == 0 && d->rear == d->capacity - 1) || (d->front == d->rear + 1))
         {
@@ -131,6 +131,7 @@ static int deque_insert(struct deque *d, int val)
 // Read an element from the deque
 static int deque_read(struct deque *d)
 {
+    int ret_val;
     if ((d->front == -1) && (d->rear == -1))
     {
         printk(KERN_ALERT "E: Deque is empty\n");
@@ -138,19 +139,22 @@ static int deque_read(struct deque *d)
     }
     else if (d->front == d->rear)
     {
+        ret_val = d->arr[d->front];
         d->front = -1;
         d->rear = -1;
-        return d->arr[d->front];
+        return ret_val;
     }
     else if (d->front == (d->capacity - 1))
     {
+        ret_val = d->arr[d->front];
         d->front = 0;
-        return d->arr[d->front];
+        return ret_val;
     }
     else
     {
+        ret_val = d->arr[d->front];
         d->front = d->front + 1;
-        return d->arr[d->front];
+        return ret_val;
     }
 }
 
@@ -415,16 +419,7 @@ static ssize_t handleWrite(struct process_node *node)
             printk(KERN_ALERT "E: Value buffer size must be at max 4 bytes\n", node->pid);
             return -EINVAL;
         }
-        
-        int front = node->process_deque->front;
-        int rear = node->process_deque->rear;
-        int capacity = node->process_deque->capacity; 
-        if (front % capacity == (rear + 1) % capacity)
-        {
-            printk(KERN_ALERT "E: Deque is full\n");
-            return -EACCES;
-        }
-
+    
         value = *((int *)procfs_buffer);
 
         ret_val = deque_insert(node->process_deque, value);
