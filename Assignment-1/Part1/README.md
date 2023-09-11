@@ -1,5 +1,11 @@
 # Steps to install the Linux Kernel 5.10.191
 
+PS: Make sure that the GRUB_TIMEOUT is not set to 0 seconds in ```/etc/default/grub```. If it is set to 0, then you will not be able to see the grub menu while booting. To change the value of GRUB_TIMEOUT, run the following command
+
+```bash
+sudo nano /etc/default/grub
+```
+
 ## Step 1: Download the kernel from the official website
 
 ```bash
@@ -9,7 +15,7 @@ wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.191.tar.xz
 ## Step 2: Install the dependencies
 
 ```bash
-sudo apt-get install build-essential ncurses-dev bison flex libssl-dev libelf-dev 
+sudo apt-get install build-essential ncurses-dev bison flex libssl-dev libelf-dev bc gcc
 sudo apt install dwarves
 sudo apt install -y zstd
 ```
@@ -17,7 +23,8 @@ sudo apt install -y zstd
 ## Step 3: Extract the tar file
 
 ```bash
-tar -xvf linux-5.10.191.tar.xz
+mkdir linux-5.10.191
+tar -xf linux-5.10.191.tar.xz -C linux-5.10.191 --strip-components=1
 ```
 
 ## Step 4: Change the directory to the extracted folder
