@@ -25,7 +25,6 @@ TESTS CHECKED -> each test carries 5 marks
 14. File close success test
 15. Reopen after closing success test
 16. Queue reset after reopen success test
-
 */
 
 static int marks = 0;
@@ -40,9 +39,7 @@ inline void failure(std::string error_str = "")
 {
     std::cout << "\033[1;31m FAIL \033[0m\n";
     if(error_str != "")
-    {
         std::cout<<error_str<<"\n";
-    }
     
 }
 
@@ -64,133 +61,89 @@ int main(int argc, char *argv[])
     // TEST 2 
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] File Reopen Test : ";
     if(open(procfile_name, O_RDWR) < 0 )
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 3
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Read Without Initialization Test : ";
     if(read(fd, (char *)&readBuff, sizeof(readBuff)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 4
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Initialization With non-byte N Test : ";
     int out_of_range_N = 1000; 
     if(write(fd, (char*)&out_of_range_N, sizeof(out_of_range_N)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 5
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Initialization With Out of Range byte N Test : ";
     char out_of_range_N_byte = 101; 
     if(write(fd, (char*)&out_of_range_N_byte, sizeof(out_of_range_N_byte)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 6
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Initialization With Zero N Test : ";
     char zero_N = 0; 
     if(write(fd, (char*)&zero_N, sizeof(zero_N)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 7
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Initialization With N = 100 Test : ";
     char valid_N = 100; 
     int ret = write(fd, (char*)&valid_N, sizeof(valid_N));
     if( ret == sizeof(char)) 
-    {
         success();
-    }
     else 
-    {
         failure(strerror(errno));
-    }
 
     // TEST 8
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Incorrect Data Write with Long Long Test : ";
     long long invalid_write_ll = 10000000000000; 
     if(write(fd, (char*)&invalid_write_ll, sizeof(invalid_write_ll)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 9
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Incorrect Data Write with Char Test : ";
     char invalid_write_char = 1; 
     if(write(fd, (char*)&invalid_write_char, sizeof(invalid_write_char)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 10
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Correct Data Write Test : ";
     int valid_write_data = 1000; 
     if(write(fd, (char*)&valid_write_data, sizeof(valid_write_data)) == sizeof(int))
-    {
         success();
-    }
     else 
-    {
         failure(strerror(errno));
-    }
 
     // TEST 11
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Correct Data Read Test : ";
     int valid_read_data; 
     if(read(fd, (char*)&valid_read_data, sizeof(valid_read_data)) == sizeof(int))
-    {
         success();
-    }
     else 
-    {
         failure(strerror(errno));
-    }
 
     // TEST 12
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Excess Data Read Test : ";
     int invalid_read_data; 
     if(read(fd, (char*)&invalid_read_data, sizeof(invalid_read_data)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 13
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Excess Data Write Test : ";
@@ -201,13 +154,9 @@ int main(int argc, char *argv[])
         if(i == valid_N + 1)
         {
             if(write(fd, (char*)&valid_write_data, sizeof(valid_write_data)) == -1)
-            {
                 success();
-            }
             else 
-            {
                 failure(strerror(errno));
-            }
             break;
         }
         if(!(write(fd, (char*)&valid_write_data, sizeof(valid_write_data)) == sizeof(int)))
@@ -220,13 +169,9 @@ int main(int argc, char *argv[])
     // TEST 14
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] File Close Test : ";
     if(close(fd) == 0)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     // TEST 15
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Reopen After Close Test : ";
@@ -241,13 +186,9 @@ int main(int argc, char *argv[])
     // TEST 16
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Read After Reopen Test : ";
     if(read(fd, (char *)&readBuff, sizeof(readBuff)) == -1)
-    {
         success();
-    }
     else 
-    {
         failure();
-    }
 
     std::cout<<"MARKS: " << marks << " / " << total_marks << "\n";
 

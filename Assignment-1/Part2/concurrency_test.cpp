@@ -95,13 +95,9 @@ int simulate_queue( char length,  const char* procfile_name )
             }
 
             if(valid_write_data % 2 ) // odd
-            {
                 dq.push_front(valid_write_data);
-            }
             else // even
-            {
                 dq.push_back(valid_write_data);
-            }
         }
         else 
         {
@@ -146,8 +142,6 @@ successCase:
 failureCase: 
     close(fd);
     return 1;
-
-
 }
 
 int main(int argc, char* argv[])

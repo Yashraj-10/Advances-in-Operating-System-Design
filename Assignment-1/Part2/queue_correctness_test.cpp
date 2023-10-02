@@ -26,9 +26,7 @@ inline void failure(std::string error_str = "")
 {
     std::cout << "\033[1;31m FAIL \033[0m\n";
     if (error_str != "")
-    {
         std::cout << error_str << "\n";
-    }
 }
 
 int simulate_queue(char length, const char *procfile_name)
@@ -78,13 +76,9 @@ int simulate_queue(char length, const char *procfile_name)
             }
 
             if (valid_write_data % 2) // odd
-            {
                 dq.push_front(valid_write_data);
-            }
             else // even
-            {
                 dq.push_back(valid_write_data);
-            }
         }
         else
         {
@@ -139,9 +133,7 @@ int main(int argc, char *argv[])
     const char *procfile_name = argv[1];
     char lengths[] = {1, 50, 100};
     for (auto length : lengths)
-    {
         simulate_queue(length, procfile_name);
-    }
 
     std::cout << "MARKS: " << marks << " / " << total_marks << "\n";
 
