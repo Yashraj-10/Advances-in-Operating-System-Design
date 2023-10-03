@@ -76,7 +76,7 @@ static struct deque *deque_init(int capacity)
 // Insert an element in the deque
 static int deque_insert(struct deque *d, int val)
 {
-    if (val % 2 == 0)
+    if (val % 2 != 0)
     {
         if ((d->front == 0 && d->rear == d->capacity - 1) || (d->front == d->rear + 1))
         {
@@ -354,7 +354,7 @@ static ssize_t procfile_read(struct file *filep, char __user *buffer, size_t len
         else
         {
             min_val = deque_read(node->process_deque);
-            strncpy(procfs_buffer, (const char *)&min_val, sizeof(int));
+            memcpy(procfs_buffer, (const char *)&min_val, sizeof(int));
             procfs_buffer[sizeof(int)] = '\0';
             procfs_buffer_size = sizeof(int);
             ret_val = sizeof(int);
@@ -412,7 +412,7 @@ static ssize_t handleWrite(struct process_node *node)
     }
     else if (node->state == PROC_READ)
     {
-        if (procfs_buffer_size > 4ul)
+        if (procfs_buffer_size != 4ul)
         {
             printk(KERN_ALERT "E: Value buffer size must be at max 4 bytes\n", node->pid);
             return -EINVAL;
