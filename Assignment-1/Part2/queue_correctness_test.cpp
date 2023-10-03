@@ -37,39 +37,32 @@ int simulate_queue(char length, const char *procfile_name)
     std::deque<int> dq;
     int ret;
 
-    if (fd < 0)
-    {
+    if (fd < 0) {
         failure("OPEN FAILED");
         goto failureCase;
         ;
     }
     ret = write(fd, &length, sizeof(length));
-    if (!(ret == sizeof(char) || ret == 0))
-    {
+    if (!(ret == sizeof(char) || ret == 0)) {
         failure("INITIALIZATION FAILED");
         goto failureCase;
         ;
     }
 
-    for (int ops = 1; ops <= 1000; ops++)
-    {
+    for (int ops = 1; ops <= 1000; ops++) {
         int op = rand() % 2;
-        if (op == 0) // WRITE
-        {
+        if (op == 0) { // write
             int valid_write_data = rand();
             int ret = write(fd, (char *)&valid_write_data, sizeof(valid_write_data));
-            if (dq.size() == length)
-            {
-                if (!(ret == -1))
-                {
+            if (dq.size() == length) {
+                if (!(ret == -1)) {
                     failure("ALLOWED WRITE BEYOND SIZE");
                     goto failureCase;
                     ;
                 }
                 continue;
             }
-            else if (ret != sizeof(int))
-            {
+            else if (ret != sizeof(int)) {
                 failure("NORMAL WRITE FAILED");
                 goto failureCase;
                 ;
@@ -80,23 +73,19 @@ int simulate_queue(char length, const char *procfile_name)
             else // even
                 dq.push_back(valid_write_data);
         }
-        else
-        {
+        else {
             int valid_read_data;
             int ret = read(fd, (char *)&valid_read_data, sizeof(valid_read_data));
 
-            if (dq.size() == 0)
-            {
-                if (!(ret == -1))
-                {
+            if (dq.size() == 0) {
+                if (!(ret == -1)) {
                     failure("READ FROM EMPTY QUEUE DID NOT RETURN ERROR");
                     goto failureCase;
                     ;
                 }
                 continue;
             }
-            if (ret != sizeof(int))
-            {
+            if (ret != sizeof(int)) {
                 failure("NORMAL READ FAILED DUE TO ERROR");
                 goto failureCase;
                 ;
@@ -104,8 +93,7 @@ int simulate_queue(char length, const char *procfile_name)
 
             int valid_read_data_dq = dq.front();
             dq.pop_front();
-            if (valid_read_data_dq != valid_read_data)
-            {
+            if (valid_read_data_dq != valid_read_data) {
                 failure("NORMAL READ FAILED DUE TO INCORRECT OUTPUT");
                 std::cout << "Expected : " << valid_read_data_dq << " Got : " << valid_read_data << "after " << ops << " operations\n";
                 goto failureCase;
@@ -115,8 +103,7 @@ int simulate_queue(char length, const char *procfile_name)
     }
 
 successCase:
-    if (!(close(fd) == 0))
-    {
+    if (!(close(fd) == 0)) {
         failure("FILE CLOSE FAILED");
         goto failureCase;
     }

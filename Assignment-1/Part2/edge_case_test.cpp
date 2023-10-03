@@ -35,12 +35,12 @@ inline void success()
     marks += 5;
     std::cout << "\033[1;32m PASS \033[0m\n";
 }
+
 inline void failure(std::string error_str = "")
 {
     std::cout << "\033[1;31m FAIL \033[0m\n";
     if(error_str != "")
         std::cout<<error_str<<"\n";
-    
 }
 
 int main(int argc, char *argv[])
@@ -51,8 +51,7 @@ int main(int argc, char *argv[])
     // TEST 1
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] File Open Test : ";
     int fd = open(procfile_name, O_RDWR);
-    if(fd<0)
-    {
+    if(fd<0) {
         failure(strerror(errno));
         return 1;
     }
@@ -148,19 +147,16 @@ int main(int argc, char *argv[])
     // TEST 13
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Excess Data Write Test : ";
     
-    for( int i = 1; i<= valid_N + 1 ; i++)
-    {
+    for( int i = 1; i<= valid_N + 1 ; i++) {
         int valid_write_data = rand(); 
-        if(i == valid_N + 1)
-        {
+        if(i == valid_N + 1) {
             if(write(fd, (char*)&valid_write_data, sizeof(valid_write_data)) == -1)
                 success();
             else 
                 failure(strerror(errno));
             break;
         }
-        if(!(write(fd, (char*)&valid_write_data, sizeof(valid_write_data)) == sizeof(int)))
-        {
+        if(!(write(fd, (char*)&valid_write_data, sizeof(valid_write_data)) == sizeof(int))) {
             failure(strerror(errno));
             break;
         }
@@ -176,8 +172,7 @@ int main(int argc, char *argv[])
     // TEST 15
     std::cout << "[ " << std::right << std::setw(2) << test_cnt++ << std::left << std::setw(2) << " ] Reopen After Close Test : ";
     fd = open(procfile_name, O_RDWR);
-    if(fd<0)
-    {
+    if(fd<0) {
         failure(strerror(errno));
         return 1;
     }
