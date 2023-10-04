@@ -17,6 +17,11 @@
 #include <linux/string.h>
 #include <linux/uaccess.h>
 
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Yashraj Singh (20CS10079) and Rishi Raj (20CS30040)");
+MODULE_DESCRIPTION("A loadable kernel module for a deque");
+MODULE_VERSION("1.0");
+
 #define PROCFS_NAME "partb_1_20CS10079_20CS30040"
 #define PROCFS_MAX_SIZE 1024
 
@@ -507,6 +512,7 @@ static int __init lkm_init(void) {
 static void __exit lkm_exit(void) {
     process_list_delete();
     remove_proc_entry(PROCFS_NAME, NULL);
+    
     printk(KERN_INFO "I: LKM for partb_1_20CS10079_20CS30040 unloaded\n");
     printk(KERN_INFO "I: /proc/%s removed\n", PROCFS_NAME);
 }
